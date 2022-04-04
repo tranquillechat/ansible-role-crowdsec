@@ -7,9 +7,7 @@ Tested on:
   platforms:
       - name: Ubuntu
         versions:
-          - bionic  #16.04
           - focal   #20.04
-          - impish  #21.10
       - name: Debian
         versions:
           - bookworm # 11
