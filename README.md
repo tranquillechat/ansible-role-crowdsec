@@ -21,7 +21,7 @@ Clone the repo
 
 ## Playbook install crowdsec/bouncer
 playbook_crowdsec_debian_install.yaml
-$ansible-playbook playbook_crowdsec_debian_install.yaml -i hosts.yaml --ask-become-pass
+#ansible-playbook playbook_crowdsec_debian_install.yaml -i hosts.yaml --ask-become-pass
 
 ## Playbook install scenario/collection
 playbook_crowdsec_debian_install.yaml
