@@ -1,0 +1,34 @@
+-
+  hosts: ansible_test
+  become: yes
+  tasks:
+    - name: Install repo/key
+      shell: curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.deb.sh | sudo bash
+    # - name: install requirements
+    #   apt:
+    #     update_cache: yes
+    #     pkg: ['curl', 'gnupg', 'apt-transport-https', 'debian-archive-keyring']
+    #     state: present
+
+    # - name: Crowdsec Add GPG apt Key
+    #   apt_key:
+    #     url: https://packagecloud.io/crowdsec/crowdsec/gpgkey/
+    #     state: present
+
+    # - name: Crowdsec Add Repository
+    #   apt_repository:
+    #     repo: "deb https://packagecloud.io/crowdsec/crowdsec/{{ ansible_distribution | lower  }} {{ansible_distribution_release | lower}} main"
+    #     state: present
+    #     update_cache: yes 
+    
+    - name: Crowdsec Apt update and install Crowdsec 
+      apt: 
+        update_cache: yes 
+        name: crowdsec
+        state: present
+
+    - name: Crowdsec-firewall-bouncer-iptables
+      apt: 
+        update_cache: yes
+        name: crowdsec-firewall-bouncer-iptables
+        state: present

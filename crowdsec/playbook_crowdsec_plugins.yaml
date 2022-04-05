@@ -1,0 +1,83 @@
+#
+# Crowdsec install/update plugins
+# Status = OK
+#
+
+- 
+  hosts: ansible_test
+  become: yes
+
+  tasks:
+    - name: update Hub
+      shell: cscli hub update
+      register: command_output
+    - debug:
+        var: command_output.stdout_lines
+
+    - name: Install collections
+      shell: "{{ item }}"
+      with_items:
+      - cscli collections install crowdsecurity/base-http-scenarios
+      - cscli collections install crowdsecurity/http-cve
+      - cscli collections install crowdsecurity/iptables
+      - cscli collections install crowdsecurity/nginx
+      - cscli collections install crowdsecurity/sshd
+      - cscli collections install crowdsecurity/mysql
+      - cscli collections install crowdsecurity/mariadb
+      - cscli collections install crowdsecurity/postfix
+      - cscli collections install crowdsecurity/linux-lpe
+      - cscli collections install crowdsecurity/linux
+      - cscli collections install crowdsecurity/wordpress
+      - cscli collections install crowdsecurity/whitelist-good-actors
+      register: command_output
+    - debug:
+        var: command_output.stdout_lines
+
+    - name: scenarios_list install
+      shell: "{{ item }}"
+      with_items:
+      - cscli scenarios install crowdsecurity/http-backdoors-attempts
+      - cscli scenarios install crowdsecurity/http-bad-user-agent
+      - cscli scenarios install crowdsecurity/http-crawl-non_statics
+      - cscli scenarios install crowdsecurity/http-generic-bf
+      - cscli scenarios install crowdsecurity/http-bf-wordpress_bf
+      - cscli scenarios install crowdsecurity/http-bf-wordpress_bf_xmlrpc
+      - cscli scenarios install crowdsecurity/http-path-traversal-probing
+      - cscli scenarios install crowdsecurity/http-probing
+      - cscli scenarios install crowdsecurity/http-sensitive-files
+      - cscli scenarios install crowdsecurity/http-wordpress_user-enum
+      - cscli scenarios install crowdsecurity/http-wordpress_wpconfig
+      - cscli scenarios install crowdsecurity/iptables-scan-multi_ports
+      - cscli scenarios install crowdsecurity/mariadb-bf
+      - cscli scenarios install firewallservices/pf-scan-multi_ports
+      - cscli scenarios install crowdsecurity/ssh-slow-bf
+      - cscli scenarios install crowdsecurity/ssh-bf
+      register: command_output
+    - debug:
+        var: command_output.stdout_lines
+
+    - name: parsers install
+      shell: "{{ item }}"
+      with_items:
+      - cscli parsers install crowdsecurity/http-logs
+      - cscli parsers install crowdsecurity/iptables-logs
+      - cscli parsers install crowdsecurity/mariadb-logs
+      - cscli parsers install crowdsecurity/mysql-logs
+      - cscli parsers install crowdsecurity/nginx-logs
+      - cscli parsers install crowdsecurity/pam-logs
+      - cscli parsers install firewallservices/pf-logs
+      - cscli parsers install crowdsecurity/postfix-logs
+      - cscli parsers install crowdsecurity/syslog-logs
+      - cscli parsers install crowdsecurity/sshd-logs
+      register: command_output
+    - debug:
+        var: command_output.stdout_lines
+
+
+
+    - name: Restart crowdsec service
+      systemd:
+        state: restarted
+        daemon_reload: yes
+        name: crowdsec
+
